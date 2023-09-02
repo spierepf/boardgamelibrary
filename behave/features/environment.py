@@ -1,6 +1,4 @@
-import os
 import pathlib
-import signal
 import subprocess
 
 import requests
@@ -26,7 +24,7 @@ def before_all(context):
 
     context.client_subprocess = subprocess.Popen(
         ["yarn dev"],
-        cwd=(pathlib.Path(__file__).parent.parent.parent/"client").resolve(),
+        cwd=(pathlib.Path(__file__).parent.parent.parent / "client").resolve(),
         shell=True,
     )
 
@@ -43,5 +41,5 @@ def before_all(context):
 
 
 def after_all(context):
-    os.killpg(os.getpgid(context.server_subprocess.pid), signal.SIGTERM)
-    os.killpg(os.getpgid(context.client_subprocess.pid), signal.SIGTERM)
+    context.server_subprocess.kill()
+    context.client_subprocess.kill()
