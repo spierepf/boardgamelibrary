@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 django = "*"
+requests = "*"
 
 [dev-packages]
+behave = "*"
+busypie = "*"
 
 [requires]
 python_version = "3.11"
