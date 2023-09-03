@@ -77,5 +77,5 @@ def step_impl(context, text, component_id):
 
 @then(u'the autocomplete component with id "{component_id}" will contain "{text}"')
 def step_impl(context, component_id, text):
-    wait().at_most(10, SECOND).until(lambda: find_element_by_xpath(
+    wait().at_most(10, SECOND).until(lambda: find_element_by_xpath(context,
         f"//*[@id='{component_id}']/..//span[@class='v-autocomplete__selection-text']").text == text)
