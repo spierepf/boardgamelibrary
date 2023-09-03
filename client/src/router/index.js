@@ -1,5 +1,5 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -14,11 +14,16 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
-        {
-            path: '/test/qrcodeReader',
-            name: 'TestQrcodeReader',
-            component: () => import('@/views/TestQrcodeReader')
-        },
+      {
+        path: '/test/qrcodeReader',
+        name: 'TestQrcodeReader',
+        component: () => import('@/views/TestQrcodeReader')
+      },
+      {
+        path: '/test/bggAutocomplete',
+        name: 'TestBggAutocomplete',
+        component: () => import('@/views/TestBggAutocomplete')
+      },
     ],
   },
 ]
