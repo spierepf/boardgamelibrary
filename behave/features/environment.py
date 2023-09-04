@@ -49,6 +49,12 @@ def before_all(context):
     context.driver = webdriver.Chrome(options)
 
 
+def before_scenario(context, scenario):
+    response = requests.get("http://localhost:8000/testOnly/reset/")
+    assert response.status_code == 200
+
+
 def after_all(context):
     context.server_subprocess.kill()
     context.client_subprocess.kill()
+    context.driver.quit()

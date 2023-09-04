@@ -18,7 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include, path
 
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html#project-configuration
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     path("testOnly/", include("test_only.urls")),
     path('admin/', admin.site.urls),
+
+    # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html#project-configuration
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
