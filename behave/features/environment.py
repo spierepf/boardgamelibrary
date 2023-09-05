@@ -9,9 +9,8 @@ from selenium.webdriver.chrome.options import Options
 
 def before_all(context):
     context.server_subprocess = subprocess.Popen(
-        ["python manage.py runserver"],
+        ["python", "manage.py", "runserver"],
         cwd=pathlib.Path(__file__).parent.parent.parent.resolve(),
-        shell=True,
         stdin=subprocess.DEVNULL,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -27,9 +26,8 @@ def before_all(context):
     wait().at_most(10, SECOND).until(verify_server_is_up)
 
     context.client_subprocess = subprocess.Popen(
-        ["yarn dev"],
+        ["yarn", "dev"],
         cwd=(pathlib.Path(__file__).parent.parent.parent / "client").resolve(),
-        shell=True,
         stdin=subprocess.DEVNULL,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -56,6 +54,6 @@ def before_scenario(context, scenario):
 
 
 def after_all(context):
-    context.server_subprocess.kill()
-    context.client_subprocess.kill()
+    context.server_subprocess.terminate()
+    context.client_subprocess.terminate()
     context.driver.quit()
