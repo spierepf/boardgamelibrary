@@ -1,61 +1,48 @@
-import pathlib
-import subprocess
+from layers import BehaveLayerStack, ClientLayer, ResetLayer, SeleniumLayer, ServerLayer
 
-import requests
-from busypie import wait, SECOND
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+behave_layer_stack = BehaveLayerStack(
+    ServerLayer(),
+    ClientLayer(),
+    SeleniumLayer(),
+    ResetLayer()
+)
 
 
 def before_all(context):
-    context.server_subprocess = subprocess.Popen(
-        ["python", "manage.py", "runserver"],
-        cwd=pathlib.Path(__file__).parent.parent.parent.resolve(),
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+    behave_layer_stack.before_all(context)
 
-    def verify_server_is_up():
-        try:
-            requests.get("http://localhost:8000/")
-            return True
-        except:
-            return False
 
-    wait().at_most(10, SECOND).until(verify_server_is_up)
-
-    context.client_subprocess = subprocess.Popen(
-        ["yarn", "dev"],
-        cwd=(pathlib.Path(__file__).parent.parent.parent / "client").resolve(),
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-
-    def verify_client_is_up():
-        try:
-            requests.get("http://localhost:3000/")
-            return True
-        except:
-            return False
-
-    wait().at_most(10, SECOND).until(verify_client_is_up)
-
-    options = Options()
-    options.headless = True
-    context.driver = webdriver.Chrome(options)
+def before_feature(context, feature):
+    behave_layer_stack.before_feature(context, feature)
 
 
 def before_scenario(context, scenario):
-    response = requests.get("http://localhost:8000/testOnly/reset/")
-    assert response.status_code == 200
-    context.token = None
-    context.users = {}
-    context.passwords = {}
+    behave_layer_stack.before_scenario(context, scenario)
+
+
+def before_step(context, step):
+    behave_layer_stack.before_step(context, step)
+
+
+def before_tag(context, tag):
+    behave_layer_stack.before_tag(context, tag)
+
+
+def after_tag(context, tag):
+    behave_layer_stack.after_tag(context, tag)
+
+
+def after_step(context, step):
+    behave_layer_stack.after_step(context, step)
+
+
+def after_scenario(context, scenario):
+    behave_layer_stack.after_scenario(context, scenario)
+
+
+def after_feature(context, feature):
+    behave_layer_stack.after_feature(context, feature)
 
 
 def after_all(context):
-    context.server_subprocess.terminate()
-    context.client_subprocess.terminate()
-    context.driver.quit()
+    behave_layer_stack.after_all(context)
