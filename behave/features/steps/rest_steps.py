@@ -17,6 +17,7 @@ def step_impl(context):
         assert response.status_code == 200
         assert response.json()['username'] == row['username']
         assert response.json()['groups'] == groups
+        context.passwords[row['username']] = row['password']
 
 
 @when('we perform a GET request on "{url}"')

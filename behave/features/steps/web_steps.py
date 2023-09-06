@@ -1,5 +1,6 @@
 import pathlib
 
+import requests
 from behave import *
 from busypie import wait, SECOND
 from selenium.webdriver.common.by import By
@@ -27,6 +28,15 @@ def find_autocomplete_list_item_by_text(context, text):
     except:
         return None
     return None
+
+
+@given(u'we are logged in as "{username}"')
+def step_impl(context, username):
+    context.driver.get(f"http://localhost:3000/")
+    response = requests.post('http://localhost:8000/api/token/',
+                             data={'username': username, 'password': context.passwords[username]})
+    assert response.status_code == 200
+    context.driver.execute_script(f'window.sessionStorage.setItem("auth", {response.text});')
 
 
 @when('we direct the browser to "{url}"')
@@ -78,4 +88,4 @@ def step_impl(context, text, component_id):
 @then(u'the autocomplete component with id "{component_id}" will contain "{text}"')
 def step_impl(context, component_id, text):
     wait().at_most(10, SECOND).until(lambda: find_element_by_xpath(context,
-        f"//*[@id='{component_id}']/..//span[@class='v-autocomplete__selection-text']").text == text)
+                                                                   f"//*[@id='{component_id}']/..//span[@class='v-autocomplete__selection-text']").text == text)
