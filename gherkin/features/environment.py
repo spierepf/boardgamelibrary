@@ -1,8 +1,4 @@
-from ..layers.behave_layer_stack import BehaveLayerStack
-from ..layers.client_layer import ClientLayer
-from ..layers.reset_layer import ResetLayer
-from ..layers.selenium_layer import SeleniumLayer
-from ..layers.server_layer import ServerLayer
+from layers import BehaveLayerStack, ClientLayer, ResetLayer, SeleniumLayer, ServerLayer
 
 behave_layer_stack = BehaveLayerStack(
     ServerLayer(),
