@@ -74,3 +74,14 @@ Feature: Login
     And we click on the component with id "open_login_dialog"
     And we click on the component with id "cancel_login"
     Then we will not see a component with id "login_dialog"
+
+
+  Scenario: A failed login attempt causes an alert to be displayed
+    Given we are not logged in
+    When we direct the browser to "/"
+    And we click on the component with id "open_login_dialog"
+    And we enter the value "test@example.com" into the text field component with id "username"
+    And we enter the value "wrong" into the text field component with id "password"
+    And we click on the component with id "submit_login"
+    Then we will not be logged in
+    And we will see a component with id "login_failed_alert"

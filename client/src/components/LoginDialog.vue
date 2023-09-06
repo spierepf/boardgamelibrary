@@ -14,6 +14,13 @@
           LOGIN
         </v-btn>
       </template>
+      <v-alert
+        id="login_failed_alert"
+        v-if="loginFailed"
+        type="error"
+        title="Login Failed"
+        text="Please check your username and password and try again."
+      />
       <v-card>
         <v-card-title>
           <span class="text-h5">Login</span>
@@ -82,6 +89,7 @@ const checkResponseStatus = (response) => {
 export default {
   data: () => ({
     dialog: false,
+    loginFailed: false,
     userDetails: {
       username: "",
       password: ""
