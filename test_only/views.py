@@ -57,4 +57,4 @@ def create_user(request):
         group = Group.objects.get_or_create(name=group_name)[0]
         group.user_set.add(user)
 
-    return JsonResponse({'username': user.username, 'groups': [g.name for g in user.groups.all()]})
+    return JsonResponse({'id': user.id, 'username': user.username, 'groups': [g.name for g in user.groups.all()]})

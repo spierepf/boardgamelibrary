@@ -15,8 +15,10 @@ def step_impl(context):
         response = requests.post('http://localhost:8000/testOnly/createUser/',
                                  json={'username': row['username'], 'password': row['password'], 'groups': groups})
         assert response.status_code == 200
-        assert response.json()['username'] == row['username']
-        assert response.json()['groups'] == groups
+        json = response.json()
+        assert json['username'] == row['username']
+        assert json['groups'] == groups
+        context.users[row['username']] = json
         context.passwords[row['username']] = row['password']
 
 

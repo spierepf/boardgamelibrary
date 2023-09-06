@@ -25,6 +25,8 @@
                 <v-text-field
                   id="username"
                   label="Username"
+                  v-model="userDetails.username"
+                  type="email"
                   required
                 ></v-text-field>
               </v-col>
@@ -32,6 +34,7 @@
                 <v-text-field
                   id="password"
                   label="Password"
+                  v-model="userDetails.password"
                   type="password"
                   required
                 ></v-text-field>
@@ -53,7 +56,7 @@
             id="submit_login"
             color="blue-darken-1"
             variant="text"
-            @click="dialog = false"
+            @click="login"
           >
             Submit
           </v-btn>
@@ -63,16 +66,45 @@
   </v-row>
 </template>
 
-<script setup>
-  import { ref } from 'vue'
-
-  const dialog = ref(false)
-</script>
-
 <script>
-  export default {
-    data: () => ({
-      dialog: false,
-    }),
+const checkResponseStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response.json()
+  } else {
+    let error = new Error(response.statusText)
+    error.response = response
+    throw error
   }
+}
+
+export default {
+  data: () => ({
+    dialog: false,
+    userDetails: {
+      username: "",
+      password: ""
+    },
+  }),
+  methods: {
+    login: function () {
+      fetch(`http://localhost:8000/api/token/`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.userDetails)
+      }).then(checkResponseStatus).then(response => {
+        sessionStorage.auth = JSON.stringify(response)
+        this.dialog = false
+      }).catch(error => {
+        if (error.response.status == 401) {
+          this.loginFailed = true
+        } else {
+          console.error(error)
+        }
+      });
+    }
+  }
+}
 </script>

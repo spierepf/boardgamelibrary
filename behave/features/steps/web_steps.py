@@ -1,3 +1,5 @@
+import base64
+import json
 import pathlib
 
 import requests
@@ -11,6 +13,14 @@ def find_element_by_id(context, component_id):
         return context.driver.find_element(By.ID, component_id)
     except:
         return None
+
+
+def click_element_by_id(context, component_id):
+    try:
+        context.driver.find_element(By.ID, component_id).click()
+        return True
+    except:
+        return False
 
 
 def find_element_by_xpath(context, component_xpath):
@@ -36,7 +46,7 @@ def step_impl(context, username):
     response = requests.post('http://localhost:8000/api/token/',
                              data={'username': username, 'password': context.passwords[username]})
     assert response.status_code == 200
-    context.driver.execute_script(f'window.sessionStorage.setItem("auth", {response.text});')
+    context.driver.execute_script(f"window.sessionStorage.setItem('auth', '{response.text}');")
 
 
 @given(u'we are not logged in')
@@ -59,11 +69,11 @@ def step_impl(context, qrcode, component_id):
 
 @when(u'we click on the component with id "{component_id}"')
 def step_impl(context, component_id):
-    component = wait().at_most(10, SECOND).until(lambda: find_element_by_id(context, component_id))
-    component.click()
+    component = wait().at_most(10, SECOND).until(lambda: click_element_by_id(context, component_id))
 
 
 @when(u'we enter the value "{value}" into the autocomplete component with id "{component_id}"')
+@when(u'we enter the value "{value}" into the text field component with id "{component_id}"')
 def step_impl(context, value, component_id):
     component = wait().at_most(10, SECOND).until(lambda: find_element_by_id(context, component_id))
     component.send_keys(value)
@@ -78,6 +88,11 @@ def step_impl(context, option, component_id):
 @then('we will see a component with id "{component_id}"')
 def step_impl(context, component_id):
     wait().at_most(10, SECOND).until(lambda: find_element_by_id(context, component_id))
+
+
+@then('we will not see a component with id "{component_id}"')
+def step_impl(context, component_id):
+    wait().at_most(10, SECOND).until(lambda: find_element_by_id(context, component_id) is None)
 
 
 @then(u'the text-field with id "{component_id}" will contain "{text}"')
@@ -101,3 +116,12 @@ def step_impl(context, component_id, text):
 def step_impl(context):
     wait().at_most(10, SECOND).until(
         lambda: context.driver.execute_script(f'return window.sessionStorage.getItem("auth");') is None)
+
+
+@then(u'we will be logged in as "{username}"')
+def step_impl(context, username):
+    auth = wait().at_most(10, SECOND).until(
+        lambda: context.driver.execute_script(f'return window.sessionStorage.getItem("auth");'))
+    access = json.loads(auth)['access']
+    user_id = json.loads(base64.b64decode(access.split('.')[1] + "=="))['user_id']
+    assert context.users[username]['id'] == user_id
