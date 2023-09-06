@@ -5,6 +5,7 @@
 <script>
 import UserMenu from "@/components/UserMenu.vue";
 import LoginDialog from "@/components/LoginDialog.vue";
+import {bus} from "@/main";
 
 export default {
   name: "UserMenuLoginDialogToggle",
@@ -14,5 +15,10 @@ export default {
       loginState: sessionStorage.auth != null
     }
   },
+  created() {
+    bus.on('loginStateChange', () => {
+      this.loginState = sessionStorage.auth != null
+    })
+  }
 }
 </script>

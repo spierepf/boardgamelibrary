@@ -18,10 +18,13 @@
   </div>
 </template>
 <script>
+import {bus} from "@/main";
+
 export default {
   methods: {
     logout: function() {
       sessionStorage.removeItem("auth")
+      bus.emit('loginStateChange', {'loginState': sessionStorage.auth != null})
     }
   }
 }

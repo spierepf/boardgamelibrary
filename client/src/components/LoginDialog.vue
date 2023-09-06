@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import {bus} from "@/main";
+
 const checkResponseStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response.json()
@@ -96,6 +98,7 @@ export default {
         body: JSON.stringify(this.userDetails)
       }).then(checkResponseStatus).then(response => {
         sessionStorage.auth = JSON.stringify(response)
+        bus.emit('loginStateChange', {'loginState': sessionStorage.auth != null})
         this.dialog = false
       }).catch(error => {
         if (error.response.status == 401) {

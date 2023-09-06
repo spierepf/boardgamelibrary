@@ -48,12 +48,13 @@ Feature: Login
     Then we will see a component with id "logout"
 
 
-  Scenario: Clicking the user logout button logs the user out
+  Scenario: Clicking the user logout button logs the user out and reveals the login dialog button
     Given we are logged in as "test@example.com"
     When we direct the browser to "/"
     And we click on the component with id "open_user_menu"
     And we click on the component with id "logout"
     Then we will not be logged in
+    And we will see a component with id "open_login_dialog"
 
 
   Scenario: We can log in
@@ -64,6 +65,7 @@ Feature: Login
     And we enter the value "password1" into the text field component with id "password"
     And we click on the component with id "submit_login"
     Then we will be logged in as "test@example.com"
+    And we will see a component with id "open_user_menu"
 
 
   Scenario: We can cancel a log in attempt
