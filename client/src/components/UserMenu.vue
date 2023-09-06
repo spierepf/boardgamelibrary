@@ -11,9 +11,18 @@
       </template>
       <v-list id="user_menu">
         <v-list-item id="logout">
-          <v-list-item-title>Logout</v-list-item-title>
+          <v-list-item-title @click.stop="logout">Logout</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    logout: function() {
+      sessionStorage.removeItem("auth")
+    }
+  }
+}
+</script>

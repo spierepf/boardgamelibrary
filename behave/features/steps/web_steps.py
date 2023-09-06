@@ -95,3 +95,9 @@ def step_impl(context, text, component_id):
 def step_impl(context, component_id, text):
     wait().at_most(10, SECOND).until(lambda: find_element_by_xpath(context,
                                                                    f"//*[@id='{component_id}']/..//span[@class='v-autocomplete__selection-text']").text == text)
+
+
+@then(u'we will not be logged in')
+def step_impl(context):
+    wait().at_most(10, SECOND).until(
+        lambda: context.driver.execute_script(f'return window.sessionStorage.getItem("auth");') is None)

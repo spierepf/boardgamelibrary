@@ -36,4 +36,11 @@ Feature: Login
     And we click on the component with id "open_user_menu"
     Then we will see a component with id "user_menu"
     Then we will see a component with id "logout"
-        
+
+
+  Scenario: Clicking the user logout button logs the user out
+    Given we are logged in as "test@example.com"
+    When we direct the browser to "/"
+    And we click on the component with id "open_user_menu"
+    And we click on the component with id "logout"
+    Then we will not be logged in
