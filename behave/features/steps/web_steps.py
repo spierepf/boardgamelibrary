@@ -39,6 +39,12 @@ def step_impl(context, username):
     context.driver.execute_script(f'window.sessionStorage.setItem("auth", {response.text});')
 
 
+@given(u'we are not logged in')
+def step_impl(context):
+    context.driver.get(f"http://localhost:3000/")
+    context.driver.execute_script(f'window.sessionStorage.removeItem("auth");')
+
+
 @when('we direct the browser to "{url}"')
 def step_impl(context, url):
     context.driver.get(f"http://localhost:3000{url}")
