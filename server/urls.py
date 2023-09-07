@@ -24,6 +24,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from . import views
+
 urlpatterns = [
     path("testOnly/", include("test_only.urls")),
     path('admin/', admin.site.urls),
@@ -31,4 +33,6 @@ urlpatterns = [
     # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html#project-configuration
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('api/clientConfiguration/', views.client_configuration, name='client_configuration'),
 ]

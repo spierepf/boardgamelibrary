@@ -54,3 +54,8 @@ def step_impl(context):
 @then(u'we will not have an access token')
 def step_impl(context):
     assert context.token is None
+
+
+@then(u'the response body will have a "{key}" entry')
+def step_impl(context, key):
+    assert key in context.response.json().keys()

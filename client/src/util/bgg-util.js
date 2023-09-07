@@ -28,17 +28,13 @@ export function createItemWithPrimaryName(primaryName) {
 }
 
 async function bggBaseUrl() {
-  return "https://boardgamegeek.com"
-  // if (sessionStorage.bggBaseUrl) {
-  //     return sessionStorage.bggBaseUrl
-  // } else if (process.env.BGG_BASE_URL) {
-  //     sessionStorage.bggBaseUrl = process.env.BGG_BASE_URL
-  //     return sessionStorage.bggBaseUrl
-  // } else {
-  //     return fetch(`${process.env.VUE_APP_SERVER_URL}/clientConfiguration`)
-  //         .then(response => response.json())
-  //         .then(json => sessionStorage.bggBaseUrl = json.BGG_BASE_URL)
-  // }
+  if (sessionStorage.bggBaseUrl) {
+    return sessionStorage.bggBaseUrl
+  } else {
+    return fetch(`http://localhost:8000/api/clientConfiguration/`)
+      .then(response => response.json())
+      .then(json => sessionStorage.bggBaseUrl = json['bgg_base_url'])
+  }
 }
 
 export async function searchBgg(searchInput) {

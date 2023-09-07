@@ -39,7 +39,6 @@ def committee_only(request):
     return JsonResponse({})
 
 
-@csrf_exempt
 def reset(request):
     User.objects.all().delete()
     return JsonResponse({})

@@ -64,7 +64,7 @@ def step_impl(context, url):
 def step_impl(context, qrcode, component_id):
     component = wait().at_most(10, SECOND).until(
         lambda: find_element_by_xpath(context, f"//div[@id='{component_id}']//input[@type='file']"))
-    component.send_keys(str((pathlib.Path(__file__).parent.parent / "qrcodes" / qrcode).resolve()))
+    component.send_keys(str((pathlib.Path(__file__).parent.parent.parent / 'resources' / 'qrcodes' / qrcode).resolve()))
 
 
 @when(u'we click on the component with id "{component_id}"')

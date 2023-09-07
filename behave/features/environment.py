@@ -1,6 +1,7 @@
-from layers import BehaveLayerStack, ClientLayer, ResetLayer, SeleniumLayer, ServerLayer
+from layers import BehaveLayerStack, BggCachingProxyLayer, ClientLayer, ResetLayer, SeleniumLayer, ServerLayer
 
 behave_layer_stack = BehaveLayerStack(
+    BggCachingProxyLayer(),
     ServerLayer(),
     ClientLayer(),
     SeleniumLayer(),
