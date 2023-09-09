@@ -1,3 +1,5 @@
+import {fetchFromServer} from "@/util/fetch-util";
+
 export function bggId(itemElement) {
   return itemElement.getAttribute('id')
 }
@@ -31,7 +33,7 @@ async function bggBaseUrl() {
   if (sessionStorage.bggBaseUrl) {
     return sessionStorage.bggBaseUrl
   } else {
-    return fetch(`http://localhost:8000/api/clientConfiguration/`)
+    return fetchFromServer(`/api/clientConfiguration/`)
       .then(response => response.json())
       .then(json => sessionStorage.bggBaseUrl = json['bgg_base_url'])
   }

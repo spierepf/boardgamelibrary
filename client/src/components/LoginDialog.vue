@@ -75,6 +75,7 @@
 
 <script>
 import {bus} from "@/main";
+import {fetchFromServer} from "@/util/fetch-util";
 
 const checkResponseStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -97,7 +98,7 @@ export default {
   }),
   methods: {
     login: function () {
-      fetch(`http://localhost:8000/api/token/`, {
+      fetchFromServer(`/api/token/`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
