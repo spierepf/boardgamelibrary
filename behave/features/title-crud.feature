@@ -30,3 +30,16 @@ Feature: Creation, retrieval, update, and deletion of titles
     Given we have not authenticated
     When we perform a POST request on "/api/library/titles/" with json body '{"name":"Some Title"}'
     Then we get a 401 response
+
+
+  @create
+  Scenario Outline: Only admin and committee users can create titles
+    Given we have authenticated as "<username>" with password "<password>"
+    When we perform a POST request on "/api/library/titles/" with json body '{"name":"Some Title"}'
+    Then we get a <expectedResponse> response
+
+    Examples:
+      | username              | password  | expectedResponse |
+      | test@example.com      | password1 | 403              |
+      | admin@example.com     | password2 | 201              |
+      | committee@example.com | password3 | 201              |
