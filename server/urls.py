@@ -35,5 +35,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('api/clientConfiguration/', views.client_configuration, name='client_configuration'),
-    path('library/', include("library.urls")),
+    path('api/library/', include("library.urls")),
 ]

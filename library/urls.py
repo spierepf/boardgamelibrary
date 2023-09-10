@@ -2,6 +2,7 @@
 
 from django.urls import path, include
 from rest_framework import routers, serializers, viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from library.models import Title
 
@@ -15,6 +16,7 @@ class TitleSerializer(serializers.HyperlinkedModelSerializer):
 
 # ViewSets define the view behavior.
 class TitleViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Title.objects.all()
     serializer_class = TitleSerializer
 

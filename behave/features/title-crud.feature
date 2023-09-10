@@ -11,7 +11,7 @@ Feature: Creation, retrieval, update, and deletion of titles
   @create
   Scenario: We can create a title without a bgg_id
     Given we have authenticated as "admin@example.com" with password "password2"
-    When we perform a POST request on "/library/titles/" with json body '{"name":"Some Title"}'
+    When we perform a POST request on "/api/library/titles/" with json body '{"name":"Some Title"}'
     Then we get a 201 response
     And the result of "$.name" will be "Some Title"
 
@@ -19,7 +19,14 @@ Feature: Creation, retrieval, update, and deletion of titles
   @create
   Scenario: We can create a title with a bgg_id
     Given we have authenticated as "admin@example.com" with password "password2"
-    When we perform a POST request on "/library/titles/" with json body '{"name":"Crossbows and Catapults", "bgg_id":2129}'
+    When we perform a POST request on "/api/library/titles/" with json body '{"name":"Crossbows and Catapults", "bgg_id":2129}'
     Then we get a 201 response
     And the result of "$.name" will be "Crossbows and Catapults"
     And the result of "$.bgg_id" will be "2129"
+
+
+  @create
+  Scenario: Unauthenticated users cannot create titles
+    Given we have not authenticated
+    When we perform a POST request on "/api/library/titles/" with json body '{"name":"Some Title"}'
+    Then we get a 401 response

@@ -57,6 +57,11 @@ def step_impl(context, username, password):
         context.token = None
 
 
+@given(u'we have not authenticated')
+def step_impl(context):
+    context.token = None
+
+
 @then(u'we will have an access token')
 def step_impl(context):
     assert context.token is not None
