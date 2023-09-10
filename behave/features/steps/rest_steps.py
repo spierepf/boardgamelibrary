@@ -3,8 +3,6 @@ import json
 from behave import *
 from jsonpath_ng import parse
 
-from util.rest_client import RestClient
-
 
 @given(u'the following users exist')
 def step_impl(context):
@@ -16,7 +14,7 @@ def step_impl(context):
         else:
             groups = []
 
-        response = RestClient().post('/testOnly/createUser/',
+        response = context.rest_client.post('/testOnly/createUser/',
                                      json={'username': row['username'], 'password': row['password'], 'groups': groups})
         assert response.status_code == 200
         json = response.json()
@@ -31,18 +29,18 @@ def step_impl(context, name, bgg_id=None):
     json_body = {'name': name}
     if bgg_id is not None:
         json_body['bgg_id'] = int(bgg_id)
-    response = RestClient(context.token).post(f'/api/library/titles/', json=json_body)
+    response = context.rest_client.post(f'/api/library/titles/', json=json_body)
     assert response.status_code == 201, response.text
 
 
 @when('we perform a GET request on "{path}"')
 def step_impl(context, path):
-    context.response = RestClient(context.token).get(path)
+    context.response = context.rest_client.get(path)
 
 
 @when(u'we perform a POST request on "{path}" with json body \'{json_body}\'')
 def step_impl(context, path, json_body):
-    context.response = RestClient(context.token).post(path, json=json.loads(json_body))
+    context.response = context.rest_client.post(path, json=json.loads(json_body))
 
 
 @then(u'we get a {status_code} response')
@@ -53,26 +51,22 @@ def step_impl(context, status_code):
 @given(u'we have authenticated as "{username}" with password "{password}"')
 @when(u'we authenticate as "{username}" with password "{password}"')
 def step_impl(context, username, password):
-    response = RestClient().post('/api/token/', {'username': username, 'password': password})
-    if response.status_code == 200:
-        context.token = response.json()['access']
-    else:
-        context.token = None
+    context.rest_client.authenticate(username, password)
 
 
 @given(u'we have not authenticated')
 def step_impl(context):
-    context.token = None
+    context.rest_client.deauthenticate()
 
 
 @then(u'we will have an access token')
 def step_impl(context):
-    assert context.token is not None
+    assert context.rest_client.has_token()
 
 
 @then(u'we will not have an access token')
 def step_impl(context):
-    assert context.token is None
+    assert not context.rest_client.has_token()
 
 
 @then(u'the response body will have a "{key}" entry')
