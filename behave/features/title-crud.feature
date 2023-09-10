@@ -43,3 +43,11 @@ Feature: Creation, retrieval, update, and deletion of titles
       | test@example.com      | password1 | 403              |
       | admin@example.com     | password2 | 201              |
       | committee@example.com | password3 | 201              |
+
+
+  @create
+  Scenario: We cannot create multiple titles with the same bgg_id
+    Given we have authenticated as "admin@example.com" with password "password2"
+    And we have created a title with name "Crossbows and Catapults" and bgg_id 2129
+    When we perform a POST request on "/api/library/titles/" with json body '{"name":"Crossbows and Catapults", "bgg_id":2129}'
+    Then we get a 500 response

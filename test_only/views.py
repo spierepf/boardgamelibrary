@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import api_view
 
+from library.models import Title
+
 
 def is_admin(user):
     if user.groups.filter(name='ADMIN').exists():
@@ -41,6 +43,7 @@ def committee_only(request):
 
 def reset(request):
     User.objects.all().delete()
+    Title.objects.all().delete()
     return JsonResponse({})
 
 

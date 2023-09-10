@@ -25,6 +25,18 @@ def step_impl(context):
         context.passwords[row['username']] = row['password']
 
 
+@given(u'we have created a title with name "{name}" and bgg_id {bgg_id}')
+def step_impl(context, name, bgg_id=None):
+    headers = {'Content-type': 'application/json'}
+    if context.token:
+        headers['authorization'] = f"Bearer {context.token}"
+    json_body = {'name': name}
+    if bgg_id is not None:
+        json_body['bgg_id'] = int(bgg_id)
+    response = requests.post(f'http://localhost:8000/api/library/titles/', headers=headers, json=json_body)
+    assert response.status_code == 201, response.text
+
+
 @when('we perform a GET request on "{url}"')
 def step_impl(context, url):
     headers = {}
