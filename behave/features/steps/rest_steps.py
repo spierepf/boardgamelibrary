@@ -1,5 +1,8 @@
+import json
+
 import requests
 from behave import *
+from jsonpath_ng import parse
 
 
 @given(u'the following users exist')
@@ -28,6 +31,14 @@ def step_impl(context, url):
     if context.token:
         headers['authorization'] = f"Bearer {context.token}"
     context.response = requests.get(f'http://localhost:8000{url}', headers=headers)
+
+
+@when(u'we perform a POST request on "{url}" with json body \'{json_body}\'')
+def step_impl(context, url, json_body):
+    headers = {'Content-type': 'application/json'}
+    if context.token:
+        headers['authorization'] = f"Bearer {context.token}"
+    context.response = requests.post(f'http://localhost:8000{url}', headers=headers, json=json.loads(json_body))
 
 
 @then(u'we get a {status_code} response')
@@ -59,3 +70,10 @@ def step_impl(context):
 @then(u'the response body will have a "{key}" entry')
 def step_impl(context, key):
     assert key in context.response.json().keys()
+
+
+@then(u'the result of "{jsonpath}" will be "{value}"')
+def step_impl(context, jsonpath, value):
+    result = parse(jsonpath).find(context.response.json())
+    assert len(result) == 1 and str(result[0].value) == str(value),\
+        f"Applying jsonpath {jsonpath} to:\n{context.response.json()}\nExpected: '{value}'\nGot:      '{result[0].value}'"

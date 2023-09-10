@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "corsheaders", # https://pypi.org/project/django-cors-headers/
+    'rest_framework', # https://www.django-rest-framework.org/#installation
+    'library',
 ]
 
 MIDDLEWARE = [
