@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+./reset.sh
+
 pytest
 
 pushd client
