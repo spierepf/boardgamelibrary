@@ -24,6 +24,7 @@ def step_impl(context):
         context.passwords[row['username']] = row['password']
 
 
+@given(u'we have created a title with name "{name}"')
 @given(u'we have created a title with name "{name}" and bgg_id {bgg_id}')
 def step_impl(context, name, bgg_id=None):
     json_body = {'name': name}

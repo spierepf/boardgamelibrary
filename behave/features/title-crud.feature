@@ -51,3 +51,16 @@ Feature: Creation, retrieval, update, and deletion of titles
     And we have created a title with name "Crossbows and Catapults" and bgg_id 2129
     When we perform a POST request on "/api/library/titles/" with json body '{"name":"Crossbows and Catapults", "bgg_id":2129}'
     Then we get a 500 response
+
+
+  @retrieve
+  Scenario: We can retrieve a list of titles
+    Given we have authenticated as "admin@example.com" with password "password2"
+    And we have created a title with name "Crossbows and Catapults" and bgg_id 2129
+    And we have created a title with name "Some Title"
+    When we perform a GET request on "/api/library/titles/"
+    Then we get a 200 response
+    And the result of "$[0].name" will be "Crossbows and Catapults"
+    And the result of "$[0].bgg_id" will be "2129"
+    And the result of "$[1].name" will be "Some Title"
+    And the result of "$[1].bgg_id" will be "None"
