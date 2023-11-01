@@ -61,8 +61,8 @@ Feature: Login
     Given we are not logged in
     When we direct the browser to "/"
     And we click on the component with id "open_login_dialog"
-    And we enter the value "test@example.com" into the text field component with id "username"
-    And we enter the value "password1" into the text field component with id "password"
+    And we enter the value "test@example.com" into the component with id "username"
+    And we enter the value "password1" into the component with id "password"
     And we click on the component with id "submit_login"
     Then we will be logged in as "test@example.com"
     And we will see a component with id "open_user_menu"
@@ -80,8 +80,8 @@ Feature: Login
     Given we are not logged in
     When we direct the browser to "/"
     And we click on the component with id "open_login_dialog"
-    And we enter the value "test@example.com" into the text field component with id "username"
-    And we enter the value "wrong" into the text field component with id "password"
+    And we enter the value "test@example.com" into the component with id "username"
+    And we enter the value "wrong" into the component with id "password"
     And we click on the component with id "submit_login"
     Then we will not be logged in
     And we will see a component with id "login_failed_alert"

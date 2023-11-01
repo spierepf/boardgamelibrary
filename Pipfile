@@ -9,6 +9,7 @@ requests = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
 jsonpath-ng = "*"
+uuid = "*"
 
 [dev-packages]
 behave = "*"

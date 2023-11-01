@@ -17,7 +17,8 @@ class RestClient:
         return requests.post(f'http://localhost:8000{path}', headers=self.headers(), json=json)
 
     def get(self, path):
-        return requests.get(f'http://localhost:8000{path}', headers=self.headers())
+        url = path if path.startswith('http') else f'http://localhost:8000{path}'
+        return requests.get(url, headers=self.headers())
 
     def deauthenticate(self):
         self._token = None

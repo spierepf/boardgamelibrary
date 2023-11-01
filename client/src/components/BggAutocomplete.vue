@@ -4,6 +4,7 @@
     v-model:items='items'
     v-model:search='search'
     @update:modelValue="$emit('itemSelected', rawItemWithBggId(selectedItemBggId))"
+    ref="input"
   />
 </template>
 
@@ -48,7 +49,6 @@ export default {
   watch: {
     search: debounce(async function (localSearch) {
       if (localSearch) {
-        console.log(localSearch)
         if (this.search && this.search !== '') {
           if (!this.selectedItemBggId) {
             const localRawItems = await searchBgg(localSearch).then(rawItems => rawItems.concat([createItemWithPrimaryName(localSearch)]))

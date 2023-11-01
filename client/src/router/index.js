@@ -15,6 +15,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
       },
       {
+        path: '/createNewCopy',
+        name: 'CreateNewCopy',
+        component: () => import('@/views/CreateNewCopy')
+      },
+      {
         path: '/test/qrcodeReader',
         name: 'TestQrcodeReader',
         component: () => import('@/views/TestQrcodeReader')

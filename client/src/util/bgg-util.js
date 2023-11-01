@@ -34,7 +34,6 @@ async function bggBaseUrl() {
     return sessionStorage.bggBaseUrl
   } else {
     return fetchFromServer(`/api/clientConfiguration/`)
-      .then(response => response.json())
       .then(json => sessionStorage.bggBaseUrl = json['bgg_base_url'])
   }
 }
