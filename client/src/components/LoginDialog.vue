@@ -75,16 +75,7 @@
 
 <script>
 import {bus} from "@/main";
-
-const checkResponseStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response.json()
-  } else {
-    let error = new Error(response.statusText)
-    error.response = response
-    throw error
-  }
-}
+import {fetchFromServer} from "@/util/fetch-util";
 
 export default {
   data: () => ({
@@ -97,14 +88,14 @@ export default {
   }),
   methods: {
     login: function () {
-      fetch(`http://localhost:8000/api/token/`, {
+      fetchFromServer(`/api/token/`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(this.userDetails)
-      }).then(checkResponseStatus).then(response => {
+      }).then(response => {
         sessionStorage.auth = JSON.stringify(response)
         bus.emit('loginStateChange', {'loginState': sessionStorage.auth != null})
         this.dialog = false

@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "corsheaders", # https://pypi.org/project/django-cors-headers/
+    'rest_framework', # https://www.django-rest-framework.org/#installation
+    'django_filters', # https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html
+    'library',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +131,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # https://django-filter.readthedocs.io/en/latest/guide/rest_framework.html
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend'
     )
 }
 

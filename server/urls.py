@@ -20,19 +20,20 @@ from django.urls import include, path
 
 # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html#project-configuration
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 
 from . import views
+from .views import MyTokenObtainPairView
 
 urlpatterns = [
     path("testOnly/", include("test_only.urls")),
     path('admin/', admin.site.urls),
 
     # https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html#project-configuration
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('api/clientConfiguration/', views.client_configuration, name='client_configuration'),
+    path('api/library/', include("library.urls")),
 ]
