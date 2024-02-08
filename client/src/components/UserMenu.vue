@@ -27,6 +27,7 @@ import {jwtDecode} from "jwt-decode";
 export default {
   methods: {
     logout: function () {
+      window.location.href = '/'
       sessionStorage.removeItem("auth")
       bus.emit('loginStateChange', {'loginState': sessionStorage.auth != null})
     }

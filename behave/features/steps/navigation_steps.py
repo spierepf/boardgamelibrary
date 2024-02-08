@@ -5,6 +5,7 @@ from behave import *
 def step_impl(context):
     context.execute_steps('When we click on the component with id "open_user_menu"')
     context.execute_steps('When we click on the component with id "open_create_new_copy_form"')
+    context.execute_steps('Then we will see a component with id "create_new_copy_form"')
 
 
 @when(u'we create a copy of the {year} edition of "{title}" for the logged in user')

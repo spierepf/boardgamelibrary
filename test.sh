@@ -10,5 +10,5 @@ pushd client
 popd
 
 pushd behave
-  behave
+  behave $@
 popd
